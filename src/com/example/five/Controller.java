@@ -1,5 +1,7 @@
 package com.example.five;
 
+import android.util.Log;
+
 /**
  * Created by gaga on 15-5-1.
  * Controller
@@ -10,16 +12,19 @@ public class Controller {
     private ChessBoardUpdateCallback mChessboardUpdateCallBack = new ChessBoardUpdateCallback() {
         @Override
         public void onPutChessByUser(Chess chess) {
+            Log.d("lijia", "User put a chess");
             mModel.userPutAChess(chess);
         }
 
         @Override
         public void onUserRegress(Chess chess) {
+            Log.d("lijia", "User regress");
             mModel.userRegress();
         }
 
         @Override
         public void onReset() {
+            Log.d("lijia", "User reset");
             mModel.reset();
         }
     };
@@ -41,9 +46,10 @@ public class Controller {
         }
     };
 
+
     public Controller(ChessBoardView chessBoardView) {
         mChessBoard = chessBoardView;
-        mModel = new Model();
+        mModel = new Model(this);
         mModel.setBoardEdgeX(mChessBoard.getVerticalBlockNum());
         mModel.setBoardEdgeY(mChessBoard.getHorizontalBlockNum());
         chessBoardView.setUpdateCallback(mChessboardUpdateCallBack);
@@ -61,6 +67,10 @@ public class Controller {
     public void reset() {
         mChessBoard.reset();
         mModel.reset();
+    }
+
+    public void regress() {
+        mChessBoard.regress();
     }
 
 

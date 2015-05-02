@@ -1,5 +1,7 @@
 package com.example.five;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -14,10 +16,12 @@ public class Model {
     private boolean mUserHandleWhiteNow;
     private int mBoardEdgeX;
     private int mBoardEdgeY;
+    private Controller mController;
 
 
 
-    public Model() {
+    public Model(Controller controller) {
+        mController = controller;
 
     }
 
@@ -41,8 +45,11 @@ public class Model {
     }
 
     public void userRegress() {
-        mChessArray.remove(mChessStack.pop());
+        if(!mChessStack.empty()){
+            Chess chess = mChessStack.pop();
+            mChessArray.remove(chess);
 //        computerThinking();
+        }
 
     }
 

@@ -22,7 +22,7 @@ public class ChessBoardView extends View {
     private int chessBoardWidth;
     private final static int STANDARD_LINES = 15; //This is a standard chessboard line number
 
-    private final static int DIRECTION_LINES = 15; // We use this as chessboard line number
+    private final static int DIRECTION_LINES = 13; // We use this as chessboard line number
     public final static int MARGIN_EDGE = 30;
     private int mVerticalBlockNum = DIRECTION_LINES -1;
     private int mHorizontalBlockNum = DIRECTION_LINES -1;
@@ -92,6 +92,14 @@ public class ChessBoardView extends View {
         mUpdateCallback = callback;
     }
 
+    public Stack<Chess> getChessStack() {
+        return mChessStack;
+    }
+
+    public ArrayList<Chess> getChessArray() {
+        return mChessArray;
+    }
+
     public void reset() {
         mChessArray.clear();
         mChessStack.clear();
@@ -154,7 +162,7 @@ public class ChessBoardView extends View {
             //convert coordinate to index
             int iX = (int) Math.rint((x - ChessBoardView.MARGIN_EDGE) / mWidthBetweenLines);
             int iY = (int) Math.rint((y - ChessBoardView.MARGIN_EDGE) / mHeightBetweenLines);
-            mUserHandleWhiteNow = mChessStack.empty() ? mUserHandleWhiteNow : !mChessStack.peek().isWhite();
+            mUserHandleWhiteNow = !mChessStack.empty() && !mChessStack.peek().isWhite();
 
             Chess chess = new Chess(iX, iY, mUserHandleWhiteNow);
             if(mChessArray.indexOf(chess) < 0){

@@ -15,7 +15,7 @@ public class Chess {
     private Paint mPaint = new Paint();
 
     public Chess(int indexX, int indexY, boolean colorWhite) {
-        Log.d("lijia", "init chess x:" + indexX + " y:" + indexY + " color:" + colorWhite);
+//        Log.d("lijia", "init chess x:" + indexX + " y:" + indexY + " color:" + colorWhite);
         setColorOfChess(colorWhite);
         setIndex(indexX, indexY);
     }

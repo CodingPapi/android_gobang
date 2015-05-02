@@ -11,6 +11,7 @@ public class MyActivity extends Activity {
     private Button mButtonStart;
     private Button mButtonStop;
     private Button mButtonReset;
+    private Button mButtonRegress;
 
     /**
      * Called when the activity is first created.
@@ -24,6 +25,7 @@ public class MyActivity extends Activity {
         mButtonStart = (Button) findViewById(R.id.button_start);
         mButtonStop = (Button) findViewById(R.id.button_stop);
         mButtonReset = (Button) findViewById(R.id.button_reset);
+        mButtonRegress = (Button) findViewById(R.id.button_regress);
         mButtonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +42,12 @@ public class MyActivity extends Activity {
             @Override
             public void onClick(View v) {
                 mController.reset();
+            }
+        });
+        mButtonRegress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mController.regress();
             }
         });
 
