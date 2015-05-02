@@ -157,13 +157,14 @@ public class ChessBoardView extends View {
             mUserHandleWhiteNow = mChessStack.empty() ? mUserHandleWhiteNow : !mChessStack.peek().isWhite();
 
             Chess chess = new Chess(iX, iY, mUserHandleWhiteNow);
-            mChessArray.add(chess);
-            mChessStack.push(chess);
-            mUserHandleWhiteNow = !mUserHandleWhiteNow;
-            if (mUpdateCallback != null) {
-                mUpdateCallback.onPutChessByUser(chess);
+            if(mChessArray.indexOf(chess) < 0){
+                mChessArray.add(chess);
+                mChessStack.push(chess);
+                if (mUpdateCallback != null) {
+                    mUpdateCallback.onPutChessByUser(chess);
+                }
+                invalidate();
             }
-            invalidate();
         }
     }
 
