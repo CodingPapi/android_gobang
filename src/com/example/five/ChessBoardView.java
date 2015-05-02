@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -54,15 +55,27 @@ public class ChessBoardView extends View {
         mPointsPaint.setStrokeWidth(10);
     }
 
-    public void startOrStop(boolean enable) {
-        mEnabled = enable;
+    public int getVerticalBlockNum() {
+        return mVerticalBlockNum;
+    }
+
+    public int getHorizontalBlockNum() {
+        return mHorizontalBlockNum;
+    }
+
+    public void start() {
+        mEnabled = true;
+    }
+
+    public void stop() {
+        mEnabled = false;
     }
 
     public boolean regress() {
         if (!mChessStack.empty()) {
             Chess chess = mChessStack.pop();
             if (mUpdateCallback != null) {
-                mUpdateCallback.onRemoveChess(chess);
+                mUpdateCallback.onUserRegress(chess);
             }
             mChessArray.remove(chess);
             invalidate();
@@ -82,6 +95,7 @@ public class ChessBoardView extends View {
     public void reset() {
         mChessArray.clear();
         mChessStack.clear();
+        stop();
         invalidate();
     }
 
@@ -124,6 +138,7 @@ public class ChessBoardView extends View {
     private void initData() {
         int mBoardWidth = getWidth();
         int mBoardHeight = getHeight();
+//        Log.d("lijia", "width:" + mBoardWidth + " height:" + mBoardHeight);
         chessBoardWidth = mBoardWidth > mBoardHeight ? mBoardHeight : mBoardWidth;
         chessBoardWidth = chessBoardWidth - MARGIN_EDGE * 2; //get width except the margin edge
         chessBoardWidth = (chessBoardWidth / (DIRECTION_LINES - 1)) * (DIRECTION_LINES - 1);// remove the edge
@@ -136,12 +151,17 @@ public class ChessBoardView extends View {
         float x = event.getX();
         float y = event.getY();
         if (checkTouchPosition(x, y)) {
-            Chess chess = new Chess(x, y, mUserHandleWhiteNow, mWidthBetweenLines, mHeightBetweenLines);
+            //convert coordinate to index
+            int iX = (int) Math.rint((x - ChessBoardView.MARGIN_EDGE) / mWidthBetweenLines);
+            int iY = (int) Math.rint((y - ChessBoardView.MARGIN_EDGE) / mHeightBetweenLines);
+            mUserHandleWhiteNow = mChessStack.empty() ? mUserHandleWhiteNow : !mChessStack.peek().isWhite();
+
+            Chess chess = new Chess(iX, iY, mUserHandleWhiteNow);
             mChessArray.add(chess);
             mChessStack.push(chess);
             mUserHandleWhiteNow = !mUserHandleWhiteNow;
             if (mUpdateCallback != null) {
-                mUpdateCallback.onPutChess(chess);
+                mUpdateCallback.onPutChessByUser(chess);
             }
             invalidate();
         }
@@ -187,7 +207,12 @@ public class ChessBoardView extends View {
 //            mChessStack.pop();
 //        }
         for (Chess chess : mChessArray) {
-            canvas.drawPoint(chess.getCoordinateX(), chess.getCoordinateY(), chess.getPaint());
+
+            // convert index to coordinate
+            int coordinateX = chess.getIndexX() * mWidthBetweenLines + ChessBoardView.MARGIN_EDGE;
+            int coordinateY = chess.getIndexY() * mHeightBetweenLines + ChessBoardView.MARGIN_EDGE;
+
+            canvas.drawPoint(coordinateX, coordinateY, chess.getPaint());
         }
     }
 

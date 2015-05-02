@@ -5,8 +5,8 @@ package com.example.five;
  * Callback for chessboard view
  */
 public interface ChessBoardUpdateCallback {
-    void onPutChess(Chess chess);
-    void onRemoveChess(Chess chess);
+    void onPutChessByUser(Chess chess);
+    void onUserRegress(Chess chess);
     void onReset();
 
 
