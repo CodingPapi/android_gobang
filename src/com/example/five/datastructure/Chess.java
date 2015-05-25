@@ -1,8 +1,7 @@
-package com.example.five;
+package com.example.five.datastructure;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 /**
  * Created by gaga on 15-4-29.

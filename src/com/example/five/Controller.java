@@ -1,6 +1,12 @@
 package com.example.five;
 
 import android.util.Log;
+import com.example.five.datastructure.Chess;
+import com.example.five.datastructure.ChessStore;
+import com.example.five.datastructure.ChessUpdateCallback;
+
+import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by gaga on 15-5-1.
@@ -9,51 +15,43 @@ import android.util.Log;
 public class Controller {
     private ChessBoardView mChessBoard;
     private Model mModel;
-    private ChessBoardUpdateCallback mChessboardUpdateCallBack = new ChessBoardUpdateCallback() {
+    private ChessStore mChessStore;
+    private ChessUpdateCallback mUpdateCallback = new ChessUpdateCallback() {
         @Override
-        public void onPutChessByUser(Chess chess) {
-            Log.d("lijia", "User put a chess");
-            mModel.userPutAChess(chess);
-        }
-
-        @Override
-        public void onUserRegress(Chess chess) {
-            Log.d("lijia", "User regress");
-            mModel.userRegress();
-        }
-
-        @Override
-        public void onReset() {
-            Log.d("lijia", "User reset");
-            mModel.reset();
+        public void onChessUpdated() {
+            mChessBoard.invalidate();
+            mModel.updateChessData();
         }
     };
-
-    private  ModelUpdateCallback mModelUpdateCallback = new ModelUpdateCallback() {
-        @Override
-        public void onUIPutChess(Chess chess) {
-            mChessBoard.putChess(chess);
-        }
-
-        @Override
-        public void onUIRegress() {
-            mChessBoard.regress();
-        }
-
-        @Override
-        public void onGameEnd() {
-            mChessBoard.stop();
-        }
-    };
-
 
     public Controller(ChessBoardView chessBoardView) {
         mChessBoard = chessBoardView;
+        mChessBoard.setChessController(this);
         mModel = new Model(this);
+        mChessStore = ChessStore.getInstance();
+        mChessStore.registerUpdateCallback(mUpdateCallback);
         mModel.setBoardEdgeX(mChessBoard.getVerticalBlockNum());
         mModel.setBoardEdgeY(mChessBoard.getHorizontalBlockNum());
-        chessBoardView.setUpdateCallback(mChessboardUpdateCallBack);
-        mModel.setUpdateCallback(mModelUpdateCallback);
+    }
+
+    public boolean getLastChessColor() {
+        return mChessStore.getLastChessColor();
+    }
+
+    public ArrayList<Chess> getChessArray() {
+        return mChessStore.getChessArray();
+    }
+
+    public Stack<Chess> getChessStack() {
+        return mChessStore.getChessStack();
+    }
+
+    public boolean putChess(Chess chess) {
+        return mChessStore.putChess(chess);
+    }
+
+    public boolean popChess() {
+        return mChessStore.popChess();
     }
 
     public void start() {
@@ -65,7 +63,7 @@ public class Controller {
     }
 
     public void reset() {
-        mChessBoard.reset();
+        mChessStore.resetData();
         mModel.reset();
     }
 

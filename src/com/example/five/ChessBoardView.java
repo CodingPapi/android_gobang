@@ -6,12 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
-import java.util.ArrayList;
-import java.util.Stack;
+import com.example.five.datastructure.Chess;
+import com.example.five.datastructure.ChessStore;
+import com.example.five.datastructure.ChessUpdateCallback;
 
 /**
  * Created by gaga on 15-4-18.
@@ -35,11 +34,8 @@ public class ChessBoardView extends View {
     private float[] mBlackPoints; // five normal points on chess board
     private boolean mUserHandleWhiteNow;
     private boolean mDrawExtraPoints;
-    private ArrayList<Chess> mChessArray = new ArrayList<Chess>();
-    private Stack<Chess> mChessStack = new Stack<Chess>();
+    private Controller mController;
     private boolean mEnabled;
-
-    private ChessBoardUpdateCallback mUpdateCallback;
 
     public ChessBoardView(Context context) {
         this(context, null, 0);
@@ -53,6 +49,11 @@ public class ChessBoardView extends View {
         super(context, attrs, defStyle);
         mLinePaint.setColor(Color.BLUE);
         mPointsPaint.setStrokeWidth(10);
+    }
+
+    public void setChessController(Controller controller) {
+        mController = controller;
+        invalidate();
     }
 
     public int getVerticalBlockNum() {
@@ -72,39 +73,11 @@ public class ChessBoardView extends View {
     }
 
     public boolean regress() {
-        if (!mChessStack.empty()) {
-            Chess chess = mChessStack.pop();
-            if (mUpdateCallback != null) {
-                mUpdateCallback.onUserRegress(chess);
-            }
-            mChessArray.remove(chess);
-            invalidate();
-            return true;
-        }
-        return false;
+        return mController.popChess();
     }
 
     public boolean putChess(Chess chess) {
         return false;
-    }
-
-    public void setUpdateCallback(ChessBoardUpdateCallback callback) {
-        mUpdateCallback = callback;
-    }
-
-    public Stack<Chess> getChessStack() {
-        return mChessStack;
-    }
-
-    public ArrayList<Chess> getChessArray() {
-        return mChessArray;
-    }
-
-    public void reset() {
-        mChessArray.clear();
-        mChessStack.clear();
-        stop();
-        invalidate();
     }
 
     @Override
@@ -162,17 +135,9 @@ public class ChessBoardView extends View {
             //convert coordinate to index
             int iX = (int) Math.rint((x - ChessBoardView.MARGIN_EDGE) / mWidthBetweenLines);
             int iY = (int) Math.rint((y - ChessBoardView.MARGIN_EDGE) / mHeightBetweenLines);
-            mUserHandleWhiteNow = !mChessStack.empty() && !mChessStack.peek().isWhite();
-
+            mUserHandleWhiteNow = !mController.getLastChessColor();
             Chess chess = new Chess(iX, iY, mUserHandleWhiteNow);
-            if(mChessArray.indexOf(chess) < 0){
-                mChessArray.add(chess);
-                mChessStack.push(chess);
-                if (mUpdateCallback != null) {
-                    mUpdateCallback.onPutChessByUser(chess);
-                }
-                invalidate();
-            }
+            mController.putChess(chess);
         }
     }
 
@@ -215,7 +180,7 @@ public class ChessBoardView extends View {
 //            canvas.drawPoint(mChessStack.peek().getCoordinateX(), mChessStack.peek().getCoordinateY(), mChessStack.peek().getPaint());
 //            mChessStack.pop();
 //        }
-        for (Chess chess : mChessArray) {
+        for (Chess chess : mController.getChessArray()) {
 
             // convert index to coordinate
             int coordinateX = chess.getIndexX() * mWidthBetweenLines + ChessBoardView.MARGIN_EDGE;
