@@ -1,9 +1,11 @@
-package com.example.five;
+package com.example.gobang;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import com.example.gobang.controller.Controller;
+import com.example.gobang.view.ChessBoardView;
 
 public class MyActivity extends Activity {
     private ChessBoardView mBoard;

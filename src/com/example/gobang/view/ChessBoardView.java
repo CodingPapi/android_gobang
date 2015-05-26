@@ -1,4 +1,4 @@
-package com.example.five;
+package com.example.gobang.view;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -6,10 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import com.example.five.datastructure.Chess;
+import com.example.gobang.controller.Controller;
+import com.example.gobang.datastructure.Chess;
 
 /**
  * Created by gaga on 15-4-18.
@@ -30,7 +30,7 @@ public class ChessBoardView extends View {
     private float[] mHorizontalLinePoints = new float[DIRECTION_LINES * 4];
     private Paint mLinePaint = new Paint();
     private Paint mPointsPaint = new Paint();
-    private float[] mBlackPoints; // five normal points on chess board
+    private float[] mBlackPoints; // gobang normal points on chess board
     private boolean mUserHandleWhiteNow;
     private boolean mDrawExtraPoints;
     private Controller mController;

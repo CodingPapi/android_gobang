@@ -4,12 +4,12 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
         >
-    <com.example.five.ChessBoardView
+    <com.example.gobang.view.ChessBoardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ff999999"
             android:id="@+id/chessboard">
-    </com.example.five.ChessBoardView>
+    </com.example.gobang.view.ChessBoardView>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"

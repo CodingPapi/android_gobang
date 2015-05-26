@@ -1,4 +1,6 @@
-package com.example.five;
+package com.example.gobang.model;
+
+import com.example.gobang.controller.Controller;
 
 /**
  * Created by gaga on 15-5-1.

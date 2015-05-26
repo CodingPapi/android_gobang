@@ -1,4 +1,4 @@
-package com.example.five.datastructure;
+package com.example.gobang.datastructure;
 
 import android.graphics.Color;
 import android.os.Handler;

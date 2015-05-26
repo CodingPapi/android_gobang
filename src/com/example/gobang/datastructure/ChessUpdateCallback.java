@@ -1,4 +1,4 @@
-package com.example.five.datastructure;
+package com.example.gobang.datastructure;
 
 /**
  * Created by gaga on 15-5-24.

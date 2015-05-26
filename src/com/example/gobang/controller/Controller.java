@@ -1,9 +1,10 @@
-package com.example.five;
+package com.example.gobang.controller;
 
-import android.util.Log;
-import com.example.five.datastructure.Chess;
-import com.example.five.datastructure.ChessStore;
-import com.example.five.datastructure.ChessUpdateCallback;
+import com.example.gobang.datastructure.Chess;
+import com.example.gobang.datastructure.ChessStore;
+import com.example.gobang.datastructure.ChessUpdateCallback;
+import com.example.gobang.model.Model;
+import com.example.gobang.view.ChessBoardView;
 
 import java.util.ArrayList;
 import java.util.Stack;
