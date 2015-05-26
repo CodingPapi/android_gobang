@@ -6,11 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.example.five.datastructure.Chess;
-import com.example.five.datastructure.ChessStore;
-import com.example.five.datastructure.ChessUpdateCallback;
 
 /**
  * Created by gaga on 15-4-18.
@@ -135,8 +134,7 @@ public class ChessBoardView extends View {
             //convert coordinate to index
             int iX = (int) Math.rint((x - ChessBoardView.MARGIN_EDGE) / mWidthBetweenLines);
             int iY = (int) Math.rint((y - ChessBoardView.MARGIN_EDGE) / mHeightBetweenLines);
-            mUserHandleWhiteNow = !mController.getLastChessColor();
-            Chess chess = new Chess(iX, iY, mUserHandleWhiteNow);
+            Chess chess = new Chess(iX, iY, mController.getColorOfLastChess() == Color.WHITE ? Color.BLACK : Color.WHITE);
             mController.putChess(chess);
         }
     }

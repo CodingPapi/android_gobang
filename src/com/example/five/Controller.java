@@ -34,8 +34,8 @@ public class Controller {
         mModel.setBoardEdgeY(mChessBoard.getHorizontalBlockNum());
     }
 
-    public boolean getLastChessColor() {
-        return mChessStore.getLastChessColor();
+    public int getColorOfLastChess() {
+        return mChessStore.getColorOfLastChess();
     }
 
     public ArrayList<Chess> getChessArray() {

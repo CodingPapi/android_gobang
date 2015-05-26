@@ -1,5 +1,6 @@
 package com.example.five.datastructure;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -63,12 +64,9 @@ public class ChessStore {
         return mChessArray;
     }
 
-    /*
-    *Get color of last putted chess
-    * Return true if it's white
-     */
-    public boolean getLastChessColor() {
-        return  !mChessStack.empty() && mChessStack.peek().isWhite();
+    public int getColorOfLastChess() {
+        return  mChessStack.empty() ? Color.WHITE : mChessStack.peek().getColor();
+        //when the stack is empty,wo assume that last is white,so we can first put a black chess
     }
 
     public boolean putChess(Chess chess) {

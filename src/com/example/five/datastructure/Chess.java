@@ -9,24 +9,18 @@ import android.graphics.Paint;
 public class Chess {
     private int mIndexX;
     private int mIndexY;
-    private boolean mIsOccupiedByWhite;
-    private boolean mIsOccupiedByBlack;
+    private int mColor = Color.WHITE;//default white
     private Paint mPaint = new Paint();
 
-    public Chess(int indexX, int indexY, boolean colorWhite) {
+    public Chess(int indexX, int indexY, int color) {
 //        Log.d("lijia", "init chess x:" + indexX + " y:" + indexY + " color:" + colorWhite);
-        setColorOfChess(colorWhite);
+        mColor = color;
+        initPaint();
         setIndex(indexX, indexY);
     }
 
-    private void setColorOfChess(boolean colorWhite) {
-        mIsOccupiedByWhite = colorWhite;
-        mIsOccupiedByBlack = !colorWhite;
-        initPaint();
-    }
-
     private void initPaint() {
-        mPaint.setColor(mIsOccupiedByWhite ? Color.WHITE : Color.BLACK);
+        mPaint.setColor(mColor);
         mPaint.setStrokeWidth(30);
     }
 
@@ -42,16 +36,8 @@ public class Chess {
         return mIndexY;
     }
 
-    public boolean isOccupied() {
-        return mIsOccupiedByBlack || mIsOccupiedByWhite;
-    }
-
-    public boolean isBlack() {
-        return mIsOccupiedByBlack;
-    }
-
-    public boolean isWhite() {
-        return mIsOccupiedByWhite;
+    public int getColor() {
+        return mColor;
     }
 
     private void setIndex(int x, int y) {
