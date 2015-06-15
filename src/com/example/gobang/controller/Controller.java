@@ -27,6 +27,7 @@ public class Controller {
 
     public Controller(ChessBoardView chessBoardView) {
         mChessBoard = chessBoardView;
+        mChessBoard.setLineNum(13);
         mChessBoard.setChessController(this);
         mModel = new Model(this);
         mChessStore = ChessStore.getInstance();

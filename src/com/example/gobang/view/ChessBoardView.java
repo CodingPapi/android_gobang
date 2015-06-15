@@ -20,21 +20,21 @@ public class ChessBoardView extends View {
     private int chessBoardWidth;
     private final static int STANDARD_LINES = 15; //This is a standard chessboard line number
 
-    private final static int DIRECTION_LINES = 13; // We use this as chessboard line number
+    private final static int DIRECTION_LINES = 15; // We use this as chessboard line number
     public final static int MARGIN_EDGE = 30;
-    private int mVerticalBlockNum = DIRECTION_LINES -1;
-    private int mHorizontalBlockNum = DIRECTION_LINES -1;
     private int mWidthBetweenLines;
     private int mHeightBetweenLines;
-    private float[] mVerticalLinePoints = new float[DIRECTION_LINES * 4];
-    private float[] mHorizontalLinePoints = new float[DIRECTION_LINES * 4];
+    private int mVerticalBlockNum;
+    private int mHorizontalBlockNum;
+    private float[] mVerticalLinePoints;
+    private float[] mHorizontalLinePoints;
     private Paint mLinePaint = new Paint();
     private Paint mPointsPaint = new Paint();
     private float[] mBlackPoints; // gobang normal points on chess board
-    private boolean mUserHandleWhiteNow;
     private boolean mDrawExtraPoints;
     private Controller mController;
     private boolean mEnabled;
+    private int mLineNum = DIRECTION_LINES;
 
     public ChessBoardView(Context context) {
         this(context, null, 0);
@@ -75,8 +75,8 @@ public class ChessBoardView extends View {
         return mController.popChess();
     }
 
-    public boolean putChess(Chess chess) {
-        return false;
+    public void setLineNum(int num) {
+        mLineNum = num;
     }
 
     @Override
@@ -118,12 +118,16 @@ public class ChessBoardView extends View {
     private void initData() {
         int mBoardWidth = getWidth();
         int mBoardHeight = getHeight();
+        mVerticalBlockNum = mLineNum -1;
+        mHorizontalBlockNum = mLineNum -1;
+        mVerticalLinePoints = new float[mLineNum * 4];
+        mHorizontalLinePoints = new float[mLineNum * 4];
 //        Log.d("lijia", "width:" + mBoardWidth + " height:" + mBoardHeight);
         chessBoardWidth = mBoardWidth > mBoardHeight ? mBoardHeight : mBoardWidth;
         chessBoardWidth = chessBoardWidth - MARGIN_EDGE * 2; //get width except the margin edge
-        chessBoardWidth = (chessBoardWidth / (DIRECTION_LINES - 1)) * (DIRECTION_LINES - 1);// remove the edge
-        mWidthBetweenLines = chessBoardWidth / (DIRECTION_LINES - 1);
-        mHeightBetweenLines = chessBoardWidth / (DIRECTION_LINES - 1);
+        chessBoardWidth = (chessBoardWidth / (mLineNum - 1)) * (mLineNum - 1);// remove the edge
+        mWidthBetweenLines = chessBoardWidth / (mLineNum - 1);
+        mHeightBetweenLines = chessBoardWidth / (mLineNum - 1);
         initLinePoints();
     }
 
@@ -140,19 +144,19 @@ public class ChessBoardView extends View {
     }
 
     private void initLinePoints() {
-        for (int i = 0; i < DIRECTION_LINES * 4; i += 4) {
+        for (int i = 0; i < mLineNum * 4; i += 4) {
             mHorizontalLinePoints[i] = 0 + MARGIN_EDGE;
             mHorizontalLinePoints[i + 1] = (i / 4) * mHeightBetweenLines + MARGIN_EDGE;
             mHorizontalLinePoints[i + 2] = chessBoardWidth + MARGIN_EDGE;
             mHorizontalLinePoints[i + 3] = (i / 4) * mHeightBetweenLines + MARGIN_EDGE;
         }
-        for (int i = 0; i < DIRECTION_LINES * 4; i += 4) {
+        for (int i = 0; i < mLineNum * 4; i += 4) {
             mVerticalLinePoints[i] = (i / 4) * mWidthBetweenLines + MARGIN_EDGE;
             mVerticalLinePoints[i + 1] = 0 + MARGIN_EDGE;
             mVerticalLinePoints[i + 2] = (i / 4) * mWidthBetweenLines + MARGIN_EDGE;
             mVerticalLinePoints[i + 3] = chessBoardWidth + MARGIN_EDGE;
         }
-        if (DIRECTION_LINES == STANDARD_LINES) {
+        if (mLineNum == STANDARD_LINES) {
             mDrawExtraPoints = true;
         }
         mBlackPoints = new float[]{3 * mWidthBetweenLines + MARGIN_EDGE, 3 * mHeightBetweenLines + MARGIN_EDGE,
@@ -167,17 +171,13 @@ public class ChessBoardView extends View {
         if (mDrawExtraPoints) {
             canvas.drawPoints(mBlackPoints, mPointsPaint);
         }
-        canvas.drawPoint(DIRECTION_LINES / 2 * mWidthBetweenLines + MARGIN_EDGE,
-                DIRECTION_LINES / 2 * mHeightBetweenLines + MARGIN_EDGE,
+        canvas.drawPoint(mLineNum / 2 * mWidthBetweenLines + MARGIN_EDGE,
+                mLineNum / 2 * mHeightBetweenLines + MARGIN_EDGE,
                 mPointsPaint);// draw center point
 
     }
 
     private void drawChesses(Canvas canvas) {
-//        while (!mChessStack.empty()) {
-//            canvas.drawPoint(mChessStack.peek().getCoordinateX(), mChessStack.peek().getCoordinateY(), mChessStack.peek().getPaint());
-//            mChessStack.pop();
-//        }
         for (Chess chess : mController.getChessArray()) {
 
             // convert index to coordinate
