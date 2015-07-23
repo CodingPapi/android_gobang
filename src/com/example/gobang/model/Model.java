@@ -18,13 +18,6 @@ public class Model {
 
     }
 
-    public void setBoardEdgeX(int x) {
-        mBoardEdgeX = x;
-    }
-
-    public void setBoardEdgeY(int y) {
-        mBoardEdgeY = y;
-    }
 
     public void updateChessData() {
 

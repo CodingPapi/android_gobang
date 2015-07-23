@@ -79,6 +79,10 @@ public class ChessBoardView extends View {
         mLineNum = num;
     }
 
+    public int getLineNum() {
+        return mLineNum;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -178,8 +182,7 @@ public class ChessBoardView extends View {
     }
 
     private void drawChesses(Canvas canvas) {
-        for (Chess chess : mController.getChessArray()) {
-
+        for (Chess chess : mController.getChessArray()) {// get chess data from controller
             // convert index to coordinate
             int coordinateX = chess.getIndexX() * mWidthBetweenLines + ChessBoardView.MARGIN_EDGE;
             int coordinateY = chess.getIndexY() * mHeightBetweenLines + ChessBoardView.MARGIN_EDGE;

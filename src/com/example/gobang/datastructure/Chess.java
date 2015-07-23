@@ -2,6 +2,7 @@ package com.example.gobang.datastructure;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 /**
  * Created by gaga on 15-4-29.
@@ -13,7 +14,7 @@ public class Chess {
     private Paint mPaint = new Paint();
 
     public Chess(int indexX, int indexY, int color) {
-//        Log.d("lijia", "init chess x:" + indexX + " y:" + indexY + " color:" + colorWhite);
+        Log.d("lijia", "init chess x:" + indexX + " y:" + indexY + " color:" + color);
         mColor = color;
         initPaint();
         setIndex(indexX, indexY);

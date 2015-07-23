@@ -1,5 +1,6 @@
 package com.example.gobang.controller;
 
+import android.graphics.Point;
 import com.example.gobang.datastructure.Chess;
 import com.example.gobang.datastructure.ChessStore;
 import com.example.gobang.datastructure.ChessUpdateCallback;
@@ -32,8 +33,11 @@ public class Controller {
         mModel = new Model(this);
         mChessStore = ChessStore.getInstance();
         mChessStore.registerUpdateCallback(mUpdateCallback);
-        mModel.setBoardEdgeX(mChessBoard.getVerticalBlockNum());
-        mModel.setBoardEdgeY(mChessBoard.getHorizontalBlockNum());
+    }
+
+    public Point getMaxPoint() {
+        Point p = new Point(mChessBoard.getLineNum() - 1, mChessBoard.getLineNum() - 1);
+        return p;
     }
 
     public int getColorOfLastChess() {
