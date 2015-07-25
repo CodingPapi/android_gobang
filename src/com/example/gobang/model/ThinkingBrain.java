@@ -1,5 +1,7 @@
 package com.example.gobang.model;
 
+import com.example.gobang.datastructure.Chess;
+
 import java.util.ArrayList;
 
 /**
@@ -17,5 +19,7 @@ public interface ThinkingBrain {
     /**
      * AI thinking
      */
-    void aiThinking();
+    void aiThinking(boolean isPut, Chess chess);
+
+    void makeDecision(boolean isUser);
 }

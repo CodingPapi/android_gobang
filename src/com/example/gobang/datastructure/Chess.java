@@ -2,6 +2,7 @@ package com.example.gobang.datastructure;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.Log;
 
 /**
@@ -10,11 +11,18 @@ import android.util.Log;
 public class Chess {
     private int mIndexX;
     private int mIndexY;
+    private Point mPosition = new Point();
     private int mColor = Color.WHITE;//default white
     private Paint mPaint = new Paint();
 
+    public Chess(Point point) {
+        this(point, Color.RED);
+    }
+
+    public Chess(Point point, int color) {
+        this(point.x, point.y, color);
+    }
     public Chess(int indexX, int indexY, int color) {
-        Log.d("lijia", "init chess x:" + indexX + " y:" + indexY + " color:" + color);
         mColor = color;
         initPaint();
         setIndex(indexX, indexY);
@@ -44,6 +52,11 @@ public class Chess {
     private void setIndex(int x, int y) {
         mIndexX = x;
         mIndexY = y;
+        mPosition.set(x, y);
+    }
+
+    public Point getPositionPoint() {
+        return mPosition;
     }
 
     @Override

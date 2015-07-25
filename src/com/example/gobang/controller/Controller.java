@@ -1,9 +1,13 @@
 package com.example.gobang.controller;
 
+import android.graphics.Color;
 import android.graphics.Point;
+import android.util.Log;
 import com.example.gobang.datastructure.Chess;
 import com.example.gobang.datastructure.ChessStore;
 import com.example.gobang.datastructure.ChessUpdateCallback;
+import com.example.gobang.datastructure.EmptySeat;
+import com.example.gobang.model.DefaultSimpleAI;
 import com.example.gobang.model.Model;
 import com.example.gobang.view.ChessBoardView;
 
@@ -18,6 +22,9 @@ public class Controller {
     private ChessBoardView mChessBoard;
     private Model mModel;
     private ChessStore mChessStore;
+    private EmptySeat mEmptySeat;
+    private final Point mMinPoint = new Point(0, 0);
+    private DefaultSimpleAI mSimpleAI;
     private ChessUpdateCallback mUpdateCallback = new ChessUpdateCallback() {
         @Override
         public void onChessUpdated() {
@@ -33,11 +40,16 @@ public class Controller {
         mModel = new Model(this);
         mChessStore = ChessStore.getInstance();
         mChessStore.registerUpdateCallback(mUpdateCallback);
+        mSimpleAI = new DefaultSimpleAI(this);
     }
 
     public Point getMaxPoint() {
-        Point p = new Point(mChessBoard.getLineNum() - 1, mChessBoard.getLineNum() - 1);
+        Point p = new Point(mChessBoard.getLineNum(), mChessBoard.getLineNum());
         return p;
+    }
+
+    public Point getMinPoint() {
+        return mMinPoint;
     }
 
     public int getColorOfLastChess() {
@@ -52,11 +64,14 @@ public class Controller {
         return mChessStore.getChessStack();
     }
 
-    public boolean putChess(Chess chess) {
-        return mChessStore.putChess(chess);
+    public boolean putChess(Point point, boolean isUser) {
+        Chess chess = new Chess(point, getColorOfLastChess() == Color.WHITE ? Color.BLACK : Color.WHITE);
+        boolean result = mChessStore.putChess(chess);
+        mSimpleAI.aiThinking(isUser,chess);
+        return result;
     }
 
-    public boolean popChess() {
+    public Chess popChess() {
         return mChessStore.popChess();
     }
 
@@ -74,7 +89,8 @@ public class Controller {
     }
 
     public void regress() {
-        mChessBoard.regress();
+        Chess chess = popChess();
+        mSimpleAI.aiThinking(false, chess);
     }
 
 

@@ -79,14 +79,14 @@ public class ChessStore {
         return false;
     }
 
-    public boolean popChess() {
+    public Chess popChess() {
+        Chess chess = null;
         if (!mChessStack.empty()) {
-            Chess chess = mChessStack.pop();
+            chess = mChessStack.pop();
             mChessArray.remove(chess);
             myHandler.sendEmptyMessage(MSG_CHESS_UPDATE);
-            return true;
         }
-        return false;
+        return chess;
     }
 
     public void registerUpdateCallback(ChessUpdateCallback callback) {

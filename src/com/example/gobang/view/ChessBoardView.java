@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -69,10 +70,6 @@ public class ChessBoardView extends View {
 
     public void stop() {
         mEnabled = false;
-    }
-
-    public boolean regress() {
-        return mController.popChess();
     }
 
     public void setLineNum(int num) {
@@ -142,8 +139,7 @@ public class ChessBoardView extends View {
             //convert coordinate to index
             int iX = (int) Math.rint((x - ChessBoardView.MARGIN_EDGE) / mWidthBetweenLines);
             int iY = (int) Math.rint((y - ChessBoardView.MARGIN_EDGE) / mHeightBetweenLines);
-            Chess chess = new Chess(iX, iY, mController.getColorOfLastChess() == Color.WHITE ? Color.BLACK : Color.WHITE);
-            mController.putChess(chess);
+            mController.putChess(new Point(iX, iY), true);
         }
     }
 
